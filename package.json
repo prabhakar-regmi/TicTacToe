@@ -1,0 +1,28 @@
+{
+  "name": "tictactoe",
+  "version": "1.0.0",
+  "description": "A game of Tic Tac Toe played with computer. The computer uses Minimax algorithm",
+  "main": "index.js",
+  "scripts": {
+    "build": "node ./index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/prabhakar-regmi/TicTacToe.git"
+  },
+  "keywords": [
+    "TicTacToe",
+    "Minimax",
+    "Prabhakar",
+    "Regmi"
+  ],
+  "author": "Prabhakar Regmi",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/prabhakar-regmi/TicTacToe/issues"
+  },
+  "homepage": "https://github.com/prabhakar-regmi/TicTacToe#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
