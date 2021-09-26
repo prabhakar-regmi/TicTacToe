@@ -2,26 +2,23 @@ const Board = require("./Board");
 
 module.exports = class DefaultBoard extends Board {
 
-    constructor(){
-        super();
+    difficulty(){
+        return 'Medium';
     }
 
     ServerMove() {
         if (this.ServerWin() || this.YouWin() || this.BoardFull()) return -1;
-        console.log('Server Move In Medium');
 
         var not_visited = this._NotVisited();
 
         // Find a potential winning position
         // or, a potential saving position
         var [winning, saving] = this._FindWinningOrSavingMove(not_visited);
-        if (winning >= 0) console.log(`Winning Move = ${winning}`);
-        if (saving >= 0) console.log(`Saving Move = ${saving}`);
 
         var move_id = 0;
         if (winning >= 0) move_id = winning;
         else if (saving >= 0) move_id = saving;
-        else move_id = not_visited[Math.floor(Math.random() * (not_visited.length - 0))];
+        else move_id = not_visited[Math.floor(Math.random() * not_visited.length)];
 
         this._MakeMove(move_id, 0);
         return move_id+1;

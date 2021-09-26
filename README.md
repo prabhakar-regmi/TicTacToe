@@ -23,5 +23,21 @@ The front end has the ``index.html`` file with dependencies on ``style.css`` and
 
 This is where most of the algorithms reside. ``Board.js`` has a base class for the "easy" version of the implementation. ``DefaultBoard.js`` extends the class for the "medium" version of the level. The ``MinimaxBoard.js`` extends ``DefaultBoard.js`` even further with the Minimax implementation. This project is thus using a basic inheritence principle of OOD.
 
+### Minimax Algorithm
+
+Minimax algorithm is a optimization algorithm used in two-people games like tic-tac-toe. Essentially, each player can be designated to a maximizer or a minimizer. Each step made my these players are scored. The maximizer player (or the player that is favoured, or the computer) is supposed to maximize the score of the move. While, the minimizer player is supposed to minimize the score. This algorithm is assuming that the minimizer player plays the optimal game possible. The algorithm works in a recursive manner, where each player scans all the empty spots and does a "trial" from that spot. Then, the next player scans all the empty spots and does a "trial" and so forth. After all the empty spots are done by the first player that did a trial, if the player is a maximizer, it takes the maximum score, else it takes the minimum score.
+
+In Tic-Tac-Toe, the scores are straight-forward - which corresponds to the results of the game. The maximizer can win the game (score of 100), minimizer can win the game (score of -100) or there is a tie (score of 50). In the implementation, I've also encorporated a logic that takes into account how deep we go though the trials. We prefer a smaller traversal. There may be 9 traversals (total ``depth`` of 9) in total, so, the formulation of the score is 
+- Maximizer Win : `100 * (10 - depth)`
+- Minimizer Win : `-100 * (10 - depth)`
+- Tie : `5 * (10-depth)`
+
+Thus, the Maximizer Win can be in the range of (100 to 1000), Minimizer win can be in the range (-100 to -1000) and Tie can be in the range (5 to 50). Thus, these sets will be quite disjoint while making a decision.
+
+## Developer's Information
+
+This implementation is done by Prabhakar Regmi.
+
+
 
 

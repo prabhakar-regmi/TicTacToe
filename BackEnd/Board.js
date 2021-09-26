@@ -28,6 +28,7 @@ module.exports = class Board {
     #server_win = false;
     #you_win = false;
     #win_raw_ids = [];
+    #serverMovesFirst = false;
 
     constructor(){
         this.Reload();
@@ -47,13 +48,25 @@ module.exports = class Board {
         this._MakeMove(id_raw-1, 1);
     }
 
+    difficulty(){
+        return 'Easy';
+    }
+
+    SetServerMovesFirst() {
+        this.#serverMovesFirst = true;
+    }
+
+    DoesServerMovesFirst() {
+        return this.#serverMovesFirst;
+    }
+
+
     // Implement the MiniMax Algorithm here
     // Currently, it is implementing an easier version
    ServerMove() {
        if (this.ServerWin() || this.YouWin() || this.BoardFull()) return -1;
-       console.log('Server Move In Easy');
        var not_visited = this._NotVisited();
-       var rand_id = Math.floor(Math.random() * (not_visited.length - 0));
+       var rand_id = Math.floor(Math.random() * not_visited.length);
        this._MakeMove(not_visited[rand_id], 0);
        return not_visited[rand_id]+1;
     }

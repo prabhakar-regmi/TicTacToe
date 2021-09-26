@@ -61,21 +61,32 @@
    transition: all 1s ease-in-out;
 }
 
-#DropDownButton{
+#DropDownDifficulty{
     display: flex;
     justify-content: center;
     align-items: center;
     vertical-align: center;
     font-size: 1em;
-    line-height: 50px;
-    width: 120px;
+    line-height: 30px;
+    width: 150px;
 }
+
+#DropDownStartPlayer{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    vertical-align: center;
+    font-size: 1em;
+    line-height: 30px;
+    width: 150px;
+}
+
 
 #restart{
     display: flex;
-    justify-content: right;
+    justify-content: center;
     align-items: right;
     vertical-align: center;
     line-height: 50px;
-    width: 120px;
+    width: 300px;
 }

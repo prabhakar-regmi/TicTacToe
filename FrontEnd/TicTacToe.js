@@ -24,15 +24,9 @@ function Display(id, is_cross=false)
     element.classList.remove("notVisited");
 }
 
-function ResetBoard()
-{
-    // Get the selected level
-    var level = document.getElementById('DropDownButton').innerText;
-    // Send message to the backend to reset the board
-    console.log({difficulty:level});
-    SendMessageToBackEnd('/restart', {'difficulty': level});
+function CreateHTMLGrid(){
 
-    // Reload the front end
+   // Reload the front end
    var element  = document.getElementById("grid");
    var html = '<div class="row">\n';
    for (var i = 1; i < 10; ++i)
@@ -51,14 +45,40 @@ function ResetBoard()
        }
    }
    html += '<br>'
-   //console.log(html);
    element.innerHTML = html;
-   // Update the turn
-   my_turn = true;
+}
+
+function ResetBoard()
+{
+    // Get the selected level
+    var difficulty = document.getElementById('DropDownDifficulty').innerText;
+    var start = document.getElementById('DropDownStartPlayer').innerText;
+    
+    // Send message to the backend to reset the board
+    if(start === 'You'){
+        start = 'player';
+    } 
+    else{
+        start = 'server';
+        my_turn = false;
+    }
+    
+    var data = {difficulty:difficulty, start:start};
+    
+    CreateHTMLGrid();
+    SendMessageToBackEnd('/restart', data)
+    .then((response) => 
+    {
+        if (response.id > 0) 
+        {
+            // Display the new Move from the server!
+            Display(response.id, true);
+        }
+        my_turn = true;
+    });
 }
 
 function HandleGameFinish(response){
-    console.log("Gamefinished condition entered!")
     my_turn = false;
     if (response.result === 'BoardFull') {
         alert("Board Is Full! There's a tie!");
@@ -92,16 +112,13 @@ function InvalidClick(id, currently_my_turn, class_names)
 {
     // CHECK FOR INVALID CLICKS
     if (Number.isNaN(id) || id < 1 || id > 9) {
-        console.log("No action to perform in these clicks!");
         return true;
     }
     if (!currently_my_turn) {
-        console.log("It's the next Player's turn.. You can't click!");
         return true;
     }
     
     if (!class_names.includes("notVisited")) {
-        console.log("This box is already clicked.. You can't click again!");
         return true;
     }
 
@@ -110,10 +127,25 @@ function InvalidClick(id, currently_my_turn, class_names)
 
 // After a refresh of the window, check the previous state in the backend
 document.addEventListener("DOMContentLoaded", (event) => {
-    SendMessageToBackEnd('/state', {}).then( (res) =>
+    CreateHTMLGrid();
+    SendMessageToBackEnd('/state', {})
+    .then( (res) =>
     {
         for (let i = 0; i < res.status.length; ++i) {
             Display(res.status[i].id, res.status[i].player === 0);
+        }
+
+        document.getElementById("textInButton").innerText = res.difficulty;
+
+        switch(res.start){
+            case 'server': 
+                document.getElementById('DropDownStartPlayer').innerText = 'Computer';
+                break;
+            case 'player':
+                document.getElementById('DropDownStartPlayer').innerText = 'You';
+                break;
+            default:
+                break;
         }
 
         if (res.win.result != 'No' && res.win.win_idx.length > 0)
@@ -142,10 +174,8 @@ $(document).ready(()=> {
         // Post the input in the backend and then get the move from the other player
         SendMessageToBackEnd('/move', {id: id})
         .then( (response) => {
-            if (response.id > 0) 
-            {
+            if (response.id > 0) {
                 // Display the new Move from the server!
-                console.log("Response Id = ", response.id);
                 Display(response.id, true);
             }
 
@@ -157,8 +187,6 @@ $(document).ready(()=> {
             }
             my_turn = true;
         });
-
-        console.log(`Message Move:${id} sent to the server`);
     });
 
     $("#restart").click(function(e){
@@ -166,11 +194,14 @@ $(document).ready(()=> {
         ResetBoard();
     });
 
-    $(".dropdown-item").click(function(){
+    $(".start_dropdown").click(function(){
         var text = $(this).text();
-        console.log(text);
-        $("#DropDownButton").text(text);
-     });
+        $("#DropDownStartPlayer").text(text);
+    });
 
+    $(".difficulty_dropdown").click(function(){
+        var text = $(this).text();
+        $("#DropDownDifficulty").text(text);
+    });
 
 });

@@ -18,37 +18,38 @@
         <div class="container">
             <h1>Tic Tac Toe</h1>
             <div id = "grid">
-              <div class="row border-b">
-                <div class="col notVisited border-r border-b" id = "1"></div>
-                <div class="col notVisited border-r border-b" id = "2"></div>
-                <div class="col notVisited border-b" id = "3"></div>
-              </div>
-              <div class="row border-b">
-                <div class="col notVisited border-r border-b" id = "4"></div>
-                <div class="col notVisited border-r border-b" id = "5"></div>
-                <div class="col notVisited border-b" id = "6"></div>
-              </div>
-              <div class="row">
-                <div class="col notVisited border-r" id="7"></div>
-                <div class="col notVisited border-r" id="8"></div>
-                <div class="col notVisited" id="9"></div>
-              </div>
-              <br>
             </div>
             <div class = "switch">
-                Level:
+
                 <div class="btn-group">
+                  
                   <div class="dropdown">
-                    <button class="btn btn-primary btn-lg active dropdown-toggle" type="button" data-toggle="dropdown" id="DropDownButton">
-                      <div id = textInButton>Medium</div>
-                    <span class="caret"></span></button>
+                    Difficulty:
+                    <button class="btn btn-secondary btn-lg dropdown-toggle" type="button" data-toggle="dropdown" id="DropDownDifficulty">
+                      <div id = "textInButton">Medium</div>
+                      <!--<span class="caret"></span>-->
+                    </button>
                     <ul class="dropdown-menu">
-                      <li><a class="dropdown-item" href="#">Easy</a></li>
-                      <li><a class="dropdown-item" href="#">Medium</a></li>
-                      <li><a class="dropdown-item" href="#">Hard</a></li>
+                      <li><a class="dropdown-item difficulty_dropdown" href="#">Easy</a></li>
+                      <li><a class="dropdown-item difficulty_dropdown" href="#">Medium</a></li>
+                      <li><a class="dropdown-item difficulty_dropdown" href="#">Hard</a></li>
                     </ul>
                   </div>
+
+                  <div class="dropdown">
+                    Start Player:
+                    <button class="btn btn-secondary btn-lg dropdown-toggle" type="button" data-toggle="dropdown" id="DropDownStartPlayer">
+                      <div id = "startPlayerButtonText">You</div>
+                      <!--<span class="caret"></span>-->
+                    </button>
+                    <ul class="dropdown-menu">
+                      <li><a class="dropdown-item start_dropdown" href="#">You</a></li>
+                      <li><a class="dropdown-item start_dropdown" href="#">Computer</a></li>
+                    </ul>
+                  </div>
+
                 </div>
+
                 <div class="btn-group">
                   <a href="#" class="btn btn-primary btn-lg active" role="button" aria-pressed="true" id="restart">Restart</a>
                 </div>

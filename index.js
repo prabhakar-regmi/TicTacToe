@@ -29,12 +29,9 @@ app.get('/', (req, res)=>{
 app.post('/move', (req, res)=>{
     var ResponseData = {id:-1, gameFinished:false, result:'', win_idx:{}};
     let id = parseInt(req.body.id);
-    console.log(`Message Move:${id} received in the server`);
     grid.MakeMove(id);
-    console.log(`Message Move:${id} : Completed Making the move`);
     ResponseData.id =  grid.ServerMove();
-    console.log(`Message Move:${id} : Completed Making the ServerMove`);
-    
+
     if (grid.ServerWin()){
         ResponseData.gameFinished = true;
         ResponseData.result = 'ServerWin';
@@ -51,7 +48,6 @@ app.post('/move', (req, res)=>{
     }
     res.json(ResponseData);
     res.end();
-    console.log(`Message Move:${id} : Completed sending the response: ${ResponseData}`);
 });
 
 // serve the post request to 
@@ -63,7 +59,9 @@ app.post('/state', (req, res)=>{
             win: {
                 result: grid.YouWin() ? 'YouWin' : (grid.ServerWin() ? 'ServerWin' : 'No'),
                 win_idx: grid.WinningIDs()
-            }
+            },
+            difficulty: grid.difficulty(),
+            start: grid.DoesServerMovesFirst() ? 'server' : 'player'
         });
     res.end();
 });
@@ -72,7 +70,6 @@ app.post('/state', (req, res)=>{
 // restart the board state
 app.post('/restart', (req, res)=>{
     
-    console.log(req.body.difficulty);
     if(req.body.difficulty === 'Easy'){
         if (difficulty === 0) grid.Reload();
         else grid = new Board();
@@ -89,7 +86,14 @@ app.post('/restart', (req, res)=>{
         difficulty = 2;
     }
 
+    var ResponseData = {id:-1, gameFinished:false, result:'', win_idx:{}};
+    if (req.body.start === 'server')
+    {
+        grid.SetServerMovesFirst();
+        ResponseData.id =  grid.ServerMove();
+    }
     // return the response back
+    res.json(ResponseData);
     res.end();
 
 });
